@@ -1,6 +1,7 @@
 package renderTemplates
 
 import (
+	"bytes"
 	"fmt"
 	"html/template"
 	"log"
@@ -25,15 +26,22 @@ func RenderTemplate(w http.ResponseWriter, tmpl string) {
 		log.Fatal()
 	}
 
+	buf := new(bytes.Buffer)
+
 	/* (old code: for reference) parse, then execute
 	parsedTemplate, _ := template.ParseFiles("./templates/"+tmpl, "./templates/"+"base"+".layout.gohtml")
 	err = parsedTemplate.Execute(w, nil)
 	*/
 
 	// parse, then execute the parsed files
-	err = parsedTemplate.Execute(w, nil)
+	err = parsedTemplate.Execute(buf, nil)
 	if err != nil {
-		log.Println("Error parsing templates:", err)
+		fmt.Println("error executing parsed template", err)
+	}
+
+	_, err = buf.WriteTo(w)
+	if err != nil {
+		log.Println("Error writing template to browser:", err)
 		return
 	}
 }
@@ -55,7 +63,6 @@ func CreateTemplateCache() (map[string]*template.Template, error) {
 		// get the actual base name of the page, extract the actual base name from the full path (page)
 		name := filepath.Base(page)
 
-		fmt.Println("page is currently", page)
 		// create a Template Set based upon "page", passed it in empty variable functions
 		// that will eventually have some functions in there which we are going to use
 		ts, err := template.New(name).Funcs(functions).ParseFiles(page)
