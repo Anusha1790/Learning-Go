@@ -5,12 +5,26 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/Anusha1790/go-course/pkg/config"
 	"github.com/Anusha1790/go-course/pkg/handlers"
+	"github.com/Anusha1790/go-course/pkg/renderTemplates"
 )
 
 const portNumber string = ":8080"
 
 func main() {
+
+	var app config.AppConfig
+
+	templateCache, err := renderTemplates.CreateTemplateCache()
+	if err != nil {
+		log.Fatal(err) // die here bcs if no templateCache, we don't have any pages to show so no use going furthut
+	}
+
+	app.TemplateCache = templateCache
+
+	// send app to renderTemplates using a function present in renderTemplates:
+	renderTemplates.GetApp(app)
 
 	// this function is LISTENING TO a request sent by a web browser
 	http.HandleFunc("/", handlers.Home)

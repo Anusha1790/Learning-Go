@@ -7,23 +7,36 @@ import (
 	"log"
 	"net/http"
 	"path/filepath"
+
+	"github.com/Anusha1790/go-course/pkg/config"
 )
 
 // FuncMap is a Map of Functions that I can use in a template
 // create our own functions and pass those to our template
 var functions = template.FuncMap{}
 
+var appHere config.AppConfig
+
+func GetApp(app config.AppConfig) {
+	appHere = app
+}
+
 func RenderTemplate(w http.ResponseWriter, tmpl string) {
 
+	/* Solution for problem of last commit:
 	templateCache, err := CreateTemplateCache()
 	if err != nil {
 		log.Fatal(err) // die here bcs if no templateCache, we don't have any pages to show so no use going furthut
 	}
+	*/
+
+	// get the templateCache from AppConfig
+	templateCache := appHere.TemplateCache
 
 	parsedTemplate, ok := templateCache[tmpl]
 	// if tmpl doesn't exist. Like instead of about.page.gohtml, if we receive yellow.page.gohtml which does not exist, then die
 	if !ok {
-		log.Fatal()
+		log.Fatal("error in parsedTemplate")
 	}
 
 	buf := new(bytes.Buffer)
@@ -34,7 +47,7 @@ func RenderTemplate(w http.ResponseWriter, tmpl string) {
 	*/
 
 	// parse, then execute the parsed files
-	err = parsedTemplate.Execute(buf, nil)
+	err := parsedTemplate.Execute(buf, nil)
 	if err != nil {
 		fmt.Println("error executing parsed template", err)
 	}
