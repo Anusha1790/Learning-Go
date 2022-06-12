@@ -1,6 +1,13 @@
 # Learning-Go
 
-Sample GoLang Project
+### Highlights of current commit
 
-Created a config pkg and call CreateTemplateCache only once in main.go
-And send main's app TemplateCache to renderTemplates pkg for it to use the cache.
+- Passing dynamic data from handlers to templates or page
+
+- To solve <span style="color:red">import cycle</span> issue:
+
+  - make models package
+
+- <u><em>models</em></u> pkg will store models like template data, database models.
+
+- always pass data types/structs using <u><b>pointers</b></u> (in most cases)

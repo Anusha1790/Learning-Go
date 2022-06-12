@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 
 	"github.com/Anusha1790/go-course/pkg/config"
+	"github.com/Anusha1790/go-course/pkg/models"
 )
 
 // FuncMap is a Map of Functions that I can use in a template
@@ -22,7 +23,7 @@ func GetApp(app *config.AppConfig) {
 	appHere = app
 }
 
-func RenderTemplate(w http.ResponseWriter, tmpl string) {
+func RenderTemplate(w http.ResponseWriter, tmpl string, templateData *models.TemplateData) {
 
 	/* Solution for problem of last commit:
 	templateCache, err := CreateTemplateCache()
@@ -53,8 +54,8 @@ func RenderTemplate(w http.ResponseWriter, tmpl string) {
 	err = parsedTemplate.Execute(w, nil)
 	*/
 
-	// parse, then execute the parsed files
-	err := parsedTemplate.Execute(buf, nil)
+	// parse, then execute the parsed files; pass templateData
+	err := parsedTemplate.Execute(buf, templateData)
 	if err != nil {
 		fmt.Println("error executing parsed template", err)
 	}

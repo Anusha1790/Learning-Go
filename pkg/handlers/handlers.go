@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/Anusha1790/go-course/pkg/config"
+	"github.com/Anusha1790/go-course/pkg/models"
 	"github.com/Anusha1790/go-course/pkg/renderTemplates"
 )
 
@@ -33,10 +34,15 @@ func NewHandler(r *Repository) {
 // it has to handle two parameters: w, r
 // Home is the home page handler
 func (rep *Repository) Home(w http.ResponseWriter, r *http.Request) {
-	renderTemplates.RenderTemplate(w, "home.page.gohtml")
+	// send empty pointer to TemplateData
+	renderTemplates.RenderTemplate(w, "home.page.gohtml", &models.TemplateData{})
 }
 
+// About id the about page handler
 func (rep *Repository) About(w http.ResponseWriter, r *http.Request) {
-	renderTemplates.RenderTemplate(w, "about.page.gohtml")
+	// here name Aarohi is used as the dynamic data
+	renderTemplates.RenderTemplate(w, "about.page.gohtml", &models.TemplateData{
+		Name: "Aarohi",
+	})
 
 }
