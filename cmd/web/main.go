@@ -22,13 +22,17 @@ func main() {
 	}
 
 	app.TemplateCache = templateCache
+	app.UseCache = false
+
+	repo := handlers.NewRepo(&app)
+	handlers.NewHandler(repo)
 
 	// send app to renderTemplates using a function present in renderTemplates:
-	renderTemplates.GetApp(app)
+	renderTemplates.GetApp(&app)
 
 	// this function is LISTENING TO a request sent by a web browser
-	http.HandleFunc("/", handlers.Home)
-	http.HandleFunc("/about", handlers.About)
+	http.HandleFunc("/", repo.Home)
+	http.HandleFunc("/about", repo.About)
 
 	_, _ = fmt.Printf("Starting aplication on port %s\n", portNumber)
 

@@ -15,9 +15,10 @@ import (
 // create our own functions and pass those to our template
 var functions = template.FuncMap{}
 
-var appHere config.AppConfig
+var appHere *config.AppConfig
 
-func GetApp(app config.AppConfig) {
+// GetApp sets the site-wide config (building the templateCache only once through main)
+func GetApp(app *config.AppConfig) {
 	appHere = app
 }
 
@@ -30,13 +31,19 @@ func RenderTemplate(w http.ResponseWriter, tmpl string) {
 	}
 	*/
 
-	// get the templateCache from AppConfig
-	templateCache := appHere.TemplateCache
+	var templateCache map[string]*template.Template
+
+	if appHere.UseCache { // then read the information from the templateCache
+		// get the templateCache from AppConfig
+		templateCache = appHere.TemplateCache
+	} else { // otherwise, rebuild the templateCache
+		templateCache, _ = CreateTemplateCache()
+	}
 
 	parsedTemplate, ok := templateCache[tmpl]
 	// if tmpl doesn't exist. Like instead of about.page.gohtml, if we receive yellow.page.gohtml which does not exist, then die
 	if !ok {
-		log.Fatal("error in parsedTemplate")
+		log.Fatal("error in parsedTemplate/ could not get template from templateCache")
 	}
 
 	buf := new(bytes.Buffer)
