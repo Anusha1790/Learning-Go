@@ -36,3 +36,7 @@ Middleware allows us to process requests as they come into your Web Aplication a
 How to use middleware? check chi template github (simple enough)
 
 Remaining last: build your <u>middleware</u> (CSRF Token, NoSurf), <u>sessions</u>
+
+### Commit
+
+https://stackoverflow.com/questions/35888817/load-image-and-css-in-golang
