@@ -1,6 +1,6 @@
-# Learning-Go
+# Building a Basic Web Application in Go
 
-### Highlights of current commit (9<sup>th</sup>)
+### Highlights of (9<sup>th</sup>) commit
 
 - Passing dynamic data from handlers to templates or page
 
@@ -14,7 +14,7 @@
 
 ### Next Commit (10<sup>th</sup>)
 
-make a separate file for routes, routes.go
+Make a separate file for routes, routes.go
 
 <u>mux</u> is a <u>http.Handler</u>
 
@@ -24,3 +24,15 @@ Some third party routers that can also be used:
 
 - https://github.com/bmizerany/pat
 - https://github.com/go-chi/chi (chi router has some built-in middleware too)
+
+### Commit 11<sup>th</sup>
+
+- Chi & Middleware
+
+Using chi third party router for routing.
+
+Middleware allows us to process requests as they come into your Web Aplication and perform some action on it.
+
+How to use middleware? check chi template github (simple enough)
+
+Remaining last: build your <u>middleware</u> (CSRF Token, NoSurf), <u>sessions</u>
