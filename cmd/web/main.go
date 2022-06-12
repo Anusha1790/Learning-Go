@@ -30,17 +30,19 @@ func main() {
 	// send app to renderTemplates using a function present in renderTemplates:
 	renderTemplates.GetApp(&app)
 
-	// this function is LISTENING TO a request sent by a web browser
-	http.HandleFunc("/", repo.Home)
-	http.HandleFunc("/about", repo.About)
-
 	_, _ = fmt.Printf("Starting aplication on port %s\n", portNumber)
 
 	// LISTEN FOR requests from web browsers
-	// start a web server that listens for requests in Go:
-	log.Fatal(http.ListenAndServe(portNumber, nil)) // nil for Handler bcs http.HandleFunk is already doing the work for me
+	// our server:
+	srv := &http.Server{
+		Addr:    portNumber,
+		Handler: routes(),
+	}
 
-	// the first 1024 ports on any computer systems are privileged
+	err = srv.ListenAndServe()
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 // for making go.mod file: go mod init <path_name>
